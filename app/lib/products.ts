@@ -1,4 +1,4 @@
-export type Product = {
+﻿export type Product = {
   id: string;
   name: string;
   price: number;
@@ -66,8 +66,8 @@ export const products: Product[] = [
     ],
   },
   {
-    id: "mirus-nehru-jacket",
-    name: "MIRUS Nehru Jacket",
+    id: "merash-nehru-jacket",
+    name: "MERASH Nehru Jacket",
     price: 2499,
     category: "Men",
     collection: "Modern Heritage",
@@ -314,7 +314,8 @@ export const collections = [
   },
 ];
 
-export const getProduct = (id: string) => products.find((product) => product.id === id);
+export const getProduct = (id: string, productList: Product[] = products) =>
+  productList.find((product) => product.id === id);
 
 export const matchesCategory = (product: Product, category: string) =>
   category === "All" ||
@@ -322,7 +323,14 @@ export const matchesCategory = (product: Product, category: string) =>
   product.tags.includes(category) ||
   (category === "New Arrivals" && Boolean(product.isNew));
 
-export const getWhatsAppOrderUrl = (product: Product, size: string, color: string) => {
-  const message = `Hi, I want to order this MIRUS product:\nProduct: ${product.name}\nSize: ${size}\nColor: ${color}\nPrice: ${formatINR(product.price)}\nPlease share delivery details.`;
-  return `${whatsappLink}?text=${encodeURIComponent(message)}`;
+export const getWhatsAppOrderUrl = (
+  product: Product,
+  size: string,
+  color: string,
+  phone: string = ownerPhone,
+) => {
+  const cleanPhone = phone.replace(/[^\d]/g, "");
+  const message = `Hi, I want to order this MERASH product:\nProduct: ${product.name}\nSize: ${size}\nColor: ${color}\nPrice: ${formatINR(product.price)}\nPlease share delivery details.`;
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 };
+

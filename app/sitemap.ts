@@ -1,8 +1,8 @@
-import type { MetadataRoute } from "next";
+﻿import type { MetadataRoute } from "next";
 import { products } from "./lib/products";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://mirus.in";
+  const baseUrl = "https://merash.in";
   const staticRoutes = ["", "/shop", "/collections", "/wishlist", "/contact", "/admin", "/profile"].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

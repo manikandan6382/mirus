@@ -10,22 +10,22 @@ export default function AboutPage() {
       <div className="mx-auto max-w-[1500px]">
         <section className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div data-reveal>
-            <p className="mb-5 text-[10px] uppercase tracking-[0.34em] text-accent">The MIRUS Philosophy</p>
+            <p className="mb-5 text-[10px] uppercase tracking-[0.34em] text-accent font-semibold">The MERASH Philosophy</p>
             <h1 className="font-serif text-6xl leading-[0.92] md:text-8xl">
               Indian clothing, edited like a global house.
             </h1>
             <p className="mt-8 max-w-2xl text-lg leading-9 text-muted-foreground">
-              MIRUS was created for customers who want a luxury fashion experience without losing the trust of a personal relationship. Every piece is selected for fabric, fall, finish, and the way it belongs in an Indian wardrobe.
+              MERASH was created for customers who want a luxury fashion experience without losing the trust of a personal relationship. Every piece is selected for fabric, fall, finish, and the way it belongs in an Indian wardrobe.
             </p>
-            <Link href="/shop" className="mt-10 inline-flex items-center gap-3 border-b border-accent pb-2 text-[11px] uppercase tracking-[0.25em] text-accent">
-              Explore the edit
+            <Link href="/shop" className="mt-10 inline-flex items-center gap-3 border-b border-accent pb-2 text-[11px] uppercase tracking-[0.25em] text-accent font-semibold">
+              Explore the Edit
               <ArrowRight size={15} />
             </Link>
           </div>
-          <div data-reveal className="relative min-h-[680px] overflow-hidden bg-muted">
+          <div data-reveal className="relative min-h-[680px] overflow-hidden rounded-[36px] bg-muted border shadow-lg">
             <Image
               src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1800&auto=format&fit=crop"
-              alt="MIRUS boutique interior"
+              alt="MERASH boutique interior"
               fill
               sizes="(min-width: 1024px) 48vw, 100vw"
               className="object-cover"
@@ -45,9 +45,9 @@ export default function AboutPage() {
             ["Personal Ordering", "Call or WhatsApp the owner to confirm your product, size, colour, and delivery details."],
             ["Door Delivery", "Orders are confirmed personally and delivered with care, without online payment gateways or credit card checkout."],
           ].map(([title, body]) => (
-            <div key={title} data-reveal className="border p-8">
+            <div key={title} data-reveal className="luxury-card p-8">
               <h2 className="font-serif text-3xl">{title}</h2>
-              <p className="mt-5 leading-8 text-muted-foreground">{body}</p>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground">{body}</p>
             </div>
           ))}
         </section>

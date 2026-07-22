@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart, Menu, MessageCircle, Moon, Phone, Search, Sun, X } from "lucide-react";
+import { Heart, Menu, MessageCircle, Moon, Phone, Search, ShieldAlert, Sun, X } from "lucide-react";
 import { useTheme } from "./theme-provider";
 import { cn } from "../lib/utils";
-import { ownerPhone, whatsappLink } from "../lib/products";
 import { useAppStore } from "../lib/store";
 
 const navLinks = [
@@ -24,6 +23,10 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const openSearch = useAppStore((state) => state.openSearch);
   const wishlistCount = useAppStore((state) => state.wishlist.length);
+  const settings = useAppStore((state) => state.settings);
+
+  const cleanPhone = settings.ownerPhone.replace(/[^\d]/g, "");
+  const whatsappUrl = `https://wa.me/${cleanPhone}`;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 12);
@@ -45,7 +48,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="text-[11px] uppercase tracking-[0.26em] text-foreground/72 transition-colors hover:text-foreground"
+              className="text-[11px] uppercase tracking-[0.26em] text-foreground/72 transition-colors hover:text-accent font-medium"
             >
               {link.name}
             </Link>
@@ -55,15 +58,15 @@ export default function Navbar() {
         <button
           aria-label="Open menu"
           onClick={() => setIsMobileMenuOpen(true)}
-          className="flex h-11 w-11 items-center justify-center border bg-background/70 text-foreground lg:hidden"
+          className="flex h-11 w-11 items-center justify-center border rounded-full bg-background/70 text-foreground lg:hidden"
         >
           <Menu size={19} strokeWidth={1.4} />
         </button>
 
         <Link href="/" className="group justify-self-center text-center">
-          <span className="block font-serif text-3xl tracking-[0.36em] md:text-4xl">MIRUS</span>
-          <span className="mt-0.5 block text-[9px] uppercase tracking-[0.42em] text-foreground/55">
-            India
+          <span className="block font-serif text-3xl tracking-[0.36em] md:text-4xl">MERASH</span>
+          <span className="mt-0.5 block text-[9px] uppercase tracking-[0.42em] text-accent font-medium">
+            Atelier India
           </span>
         </Link>
 
@@ -78,11 +81,9 @@ export default function Navbar() {
           <button
             aria-label="Toggle theme"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="h-11 w-11 rounded-full border bg-background/70 transition-colors hover:border-accent hover:text-accent"
+            className="h-11 w-11 rounded-full border bg-background/70 transition-colors hover:border-accent hover:text-accent flex items-center justify-center"
           >
-            <span className="flex items-center justify-center">
-              {theme === "dark" ? <Sun size={18} strokeWidth={1.4} /> : <Moon size={18} strokeWidth={1.4} />}
-            </span>
+            {theme === "dark" ? <Sun size={18} strokeWidth={1.4} /> : <Moon size={18} strokeWidth={1.4} />}
           </button>
           <Link
             href="/wishlist"
@@ -91,21 +92,22 @@ export default function Navbar() {
           >
             <Heart size={18} strokeWidth={1.4} />
             {wishlistCount > 0 && (
-              <span className="absolute -right-1 -top-1 min-w-5 rounded-full bg-accent px-1 text-center text-[9px] leading-5 text-accent-foreground">
+              <span className="absolute -right-1 -top-1 min-w-5 rounded-full bg-accent px-1 text-center text-[9px] leading-5 text-accent-foreground font-semibold">
                 {wishlistCount}
               </span>
             )}
           </Link>
           <a
-            href={whatsappLink}
-            className="magnetic-button hidden items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-5 py-3 text-[10px] uppercase tracking-[0.24em] text-accent transition-transform hover:-translate-y-0.5 lg:flex"
+            href={whatsappUrl}
+            target="_blank"
+            className="magnetic-button hidden items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-5 py-3 text-[10px] uppercase tracking-[0.24em] text-accent transition-transform hover:-translate-y-0.5 lg:flex font-medium"
           >
             <MessageCircle size={14} strokeWidth={1.5} />
             WhatsApp
           </a>
           <a
-            href={`tel:${ownerPhone}`}
-            className="magnetic-button hidden items-center gap-2 rounded-full bg-primary px-5 py-3 text-[10px] uppercase tracking-[0.24em] text-primary-foreground transition-transform hover:-translate-y-0.5 md:flex"
+            href={`tel:${settings.ownerPhone}`}
+            className="magnetic-button hidden items-center gap-2 rounded-full bg-primary px-5 py-3 text-[10px] uppercase tracking-[0.24em] text-primary-foreground transition-transform hover:-translate-y-0.5 md:flex font-medium"
           >
             <Phone size={14} strokeWidth={1.5} />
             Call
@@ -119,44 +121,57 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-background/96 px-6 py-5 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-[60] bg-background/96 px-6 py-6 backdrop-blur-2xl lg:hidden flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="font-serif text-3xl tracking-[0.35em]">
-                MIRUS
-              </Link>
-              <button
-                aria-label="Close menu"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex h-11 w-11 items-center justify-center border"
-              >
-                <X size={19} strokeWidth={1.4} />
-              </button>
-            </div>
-            <div className="mt-16 flex flex-col gap-8">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, y: 22 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.06 }}
+            <div>
+              <div className="flex items-center justify-between">
+                <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="font-serif text-3xl tracking-[0.35em]">
+                  MERASH
+                </Link>
+                <button
+                  aria-label="Close menu"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border"
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-serif text-4xl leading-none"
+                  <X size={19} strokeWidth={1.4} />
+                </button>
+              </div>
+              <div className="mt-12 flex flex-col gap-6">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
                   >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="font-serif text-4xl leading-none hover:text-accent transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 pb-8">
               <a
-                href={`tel:${ownerPhone}`}
-                className="mt-6 flex items-center justify-center gap-3 bg-primary px-8 py-5 text-xs uppercase tracking-[0.24em] text-primary-foreground"
+                href={`tel:${settings.ownerPhone}`}
+                className="flex items-center justify-center gap-3 rounded-full bg-primary px-8 py-5 text-xs uppercase tracking-[0.24em] text-primary-foreground font-medium"
               >
                 <Phone size={17} />
-                Call Owner
+                Call Store ({settings.ownerDisplayPhone})
               </a>
+              <Link
+                href="/admin"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-full border px-8 py-4 text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground"
+              >
+                <ShieldAlert size={15} />
+                Admin Portal
+              </Link>
             </div>
           </motion.div>
         )}

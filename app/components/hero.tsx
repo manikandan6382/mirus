@@ -9,7 +9,7 @@ import { ArrowRight } from "lucide-react";
 const slides = [
   {
     image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2200&auto=format&fit=crop",
-    title: "MIRUS",
+    title: "MERASH",
     line: "Premium fashion, ordered like a private app.",
   },
   {
